@@ -27,7 +27,8 @@ jobs:
         run: echo "DXAPP_JSON=$(jq -c < dxapp.json)" >> $GITHUB_ENV
 
       - name: Verify eggd prefix
-        run: echo $DXAPP_JSON
+        run: |
+          if [[ $(jq -r '.name' <<< $DXAPP_JSON) != eggd_* ]]; then echo "bad name"; fi
   
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
