@@ -50,7 +50,8 @@ jobs:
       - name: Verify developers set to org-emee_1
         if: always()
         run: |
-          jq -r '.developers[]'
+          a=$(jq -r '.developers[]')
+          echo $a
           if [[ $(jq -r '.developers[]' <<< $DXAPP_JSON) == 'org-emee_1' ]]; then echo "Developers not set to org-emee_1"; exit 1; fi
       
       - name: Verify authorizedUsers set to org-emee_1
