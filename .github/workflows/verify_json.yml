@@ -25,22 +25,61 @@ jobs:
 
       # Set contents of dxapp.json to env variable to access in following steps
       - name: Set env
-        run: echo "DXAPP_JSON=$(jq -c < dxapp.json)" >> $GITHUB_ENV
-        
-#       - name: Verify eggd prefix in name
-#         continue-on-error: true
-#         uses: actions/github-script@v3
-#         if: ${{ jq -r '.name' <<< $DXAPP_JSON }} == ${{ eggd_* }}
-#         with: 
-#           script: core.setFailed("Missing eggd_ prefix from name")
-        
+        run: echo "DXAPP_JSON=$(jq -c < dxapp.json)" >> $GITHUB_ENV       
         
       - name: Verify eggd prefix in name
         if: always()
         run: |
-          if [[ $(jq -r '.name' <<< $DXAPP_JSON) == eggd_* ]]; then echo "Missing eggd_ prefix from name"; exit 1; fi
+          if [[ $(jq -r '.name' <<< $DXAPP_JSON) != eggd_* ]]; then echo "Missing eggd_ prefix from name"; exit 1; fi
       
       - name: Verify eggd prefix in title
         if: always()
-        run: echo "here"
+        run: |
+          if [[ $(jq -r '.title' <<< $DXAPP_JSON) != eggd_* ]]; then echo "Missing eggd_ prefix from title"; exit 1; fi
+        
+      - name: Verify version set
+        if: always()
+        run: |
+          if [[ $(jq -r '.version' <<< $DXAPP_JSON) == null ]]; then echo "Missing version field"; exit 1; fi
+      
+      - name: Verify timeoutPolicy set
+        if: always()
+        run: |
+          if [[ $(jq -r '.runSpec.timeoutPolicy' <<< $DXAPP_JSON) == null ]]; then echo "Missing timeout policy"; exit 1; fi
+      
+      - name: Verify developers set to org-emee_1
+        if: always()
+        run: |
+          if [[ $(jq -r '.developers[]' <<< $DXAPP_JSON) == 'org-emee_1' ]]; then echo "Developers not set to org-emee_1"; exit 1; fi
+      
+      - name: Verify authorizedUsers set to org-emee_1
+        if: always()
+        run: |
+          if [[ $(jq -r '.authorizedUsers[]' <<< $DXAPP_JSON) == 'org-emee_1' ]]; then echo "Authorised users not set to org-emee_1 "; exit 1; fi
+          
+#       - name: 
+#         if: always()
+#         run: |
+#           if [[ $(jq -r '.' <<< $DXAPP_JSON) == null ]]; then echo "Missing "; exit 1; fi
+          
+          
+          
+          
+          
+          
+#         - name: 
+#         if: always()
+#         run: |
+#           if [[ $(jq -r '.' <<< $DXAPP_JSON) == null ]]; then echo "Missing "; exit 1; fi
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
