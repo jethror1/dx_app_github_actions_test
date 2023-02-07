@@ -27,20 +27,20 @@ jobs:
       - name: Set env
         run: echo "DXAPP_JSON=$(jq -c < dxapp.json)" >> $GITHUB_ENV
         
-      - name: Verify eggd prefix in name
-        continue-on-error: true
-        uses: actions/github-script@v3
-        if: ${{ jq -r '.name' <<< $DXAPP_JSON }} == ${{ eggd_* }}
-        with: 
-          script: core.setFailed("Missing eggd_ prefix from name")
-        
-        
 #       - name: Verify eggd prefix in name
 #         continue-on-error: true
-#         run: |
-#           if [[ $(jq -r '.name' <<< $DXAPP_JSON) == eggd_* ]]; then core.setFailed("Missing eggd_ prefix from name"); fi
+#         uses: actions/github-script@v3
+#         if: ${{ jq -r '.name' <<< $DXAPP_JSON }} == ${{ eggd_* }}
+#         with: 
+#           script: core.setFailed("Missing eggd_ prefix from name")
+        
+        
+      - name: Verify eggd prefix in name
+#         continue-on-error: true
+        run: |
+          if [[ $(jq -r '.name' <<< $DXAPP_JSON) == eggd_* ]]; then core.setFailed("Missing eggd_ prefix from name"); fi
       
       - name: Verify eggd prefix in title
-        continue-on-error: true
+#         continue-on-error: true
         run: echo "here"
   
