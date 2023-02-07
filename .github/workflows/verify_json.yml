@@ -30,9 +30,8 @@ jobs:
       - name: Verify eggd prefix in name
         if: always()
         run: |
-          cat="cat"
-          echo "this my ${cat}"
-          if [[ $(jq -r '.name' <<< $DXAPP_JSON) != eggd_* ]]; then echo "Missing eggd_ prefix from name"; exit 1; fi
+          name=$(jq -r '.name' <<< $DXAPP_JSON)
+          if [[ "$name" != eggd_* ]]; then echo "Missing eggd_ prefix from name"; exit 1; fi
       
       - name: Verify eggd prefix in title
         if: always()
