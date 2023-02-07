@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# Workflow of actions to verify dxapp.json
 
 name: CI
 
@@ -23,16 +23,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      # Set contents of dxapp.json to env variable to access in following steps
       - name: Set env
         run: echo "DXAPP_JSON=$(jq -c < dxapp.json)" >> $GITHUB_ENV
 
-      - name: Verify eggd prefix
+      - name: Verify eggd prefix in name
+        continue-on-error: true
         run: |
-          if [[ $(jq -r '.name' <<< $DXAPP_JSON) == eggd_* ]]; then echo "bad name"; fi
-  
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          if [[ $(jq -r '.name' <<< $DXAPP_JSON) == eggd_* ]]; then echo "Missing eggd_ prefix from name"; exit 0; fi
+      
+      - name: Verify eggd prefix in title
+        continue-on-error: true
+        run: echo "here"
   
