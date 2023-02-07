@@ -29,8 +29,10 @@ jobs:
         
       - name: Verify eggd prefix in name
         continue-on-error: true
+        uses: actions/github-script@v3
         if: ${{ <(jq -r '.name' <<< $DXAPP_JSON) == eggd_* }}
-        run: core.setFailed("Missing eggd_ prefix from name")
+        with: 
+          script: core.setFailed("Missing eggd_ prefix from name")
         
         
 #       - name: Verify eggd prefix in name
