@@ -13,9 +13,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  app_json: $(cat dxapp.json)
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   verify_json:
@@ -26,8 +23,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Set env
+        run: echo "DXAPP_JSON=$(jq < dxapp.json) >> $GITHUB_ENV"
+
       - name: Verify eggd prefix
-        run: echo $app_json
+        run: echo $DXAPP_JSON
   
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
