@@ -64,7 +64,15 @@ jobs:
         if: always()
         run: |
           if [[ $(jq -r '.regionalOptions | keys[]' <<< $DXAPP_JSON) != 'aws:eu-central-1' ]]; then echo "Region not set to aws:eu-central-1"; exit 1; fi
-          
+      - name: test
+        run: echo "test=$(git rev-list --tags --max-count=1)"
+      
+      - name: Verify incremented version
+        if: always()
+        run: |
+          # LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          LATEST_TAG=$(git rev-list --tags --max-count=1)
+          echo $LATEST_TAG
           
           
           
